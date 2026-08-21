@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Depth vs Framework-Only</title>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --card: #1a1a24;
+      --accent: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --green: #22c55e;
+      --orange: #f97316;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(180deg, #1e1b4b 0%, var(--bg) 100%);
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #a78bfa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--muted); max-width: 600px; margin: 0 auto; }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    @media (max-width: 700px) {
+      .comparison { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid #2d2d3a;
+    }
+    .card.shallow { border-top: 4px solid var(--orange); }
+    .card.deep { border-top: 4px solid var(--green); }
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    ul { list-style: none; }
+    li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #2a2a35;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    li:last-child { border-bottom: none; }
+    .icon { font-size: 1.1rem; }
+    .section-title {
+      font-size: 1.5rem;
+      margin: 2.5rem 0 1rem;
+      color: #c4b5fd;
+    }
+    p { margin-bottom: 1rem; color: var(--muted); }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid #2a2a35;
+    }
+    a { color: #a78bfa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Framework-Only vs Deep Developer</h1>
+    <p class="subtitle">The same bug. Two completely different ways of thinking.</p>
+  </header>
+
+  <main>
+    <div class="comparison">
+      <div class="card shallow">
+        <h2><span class="icon">👨‍💻</span> Framework-Only</h2>
+        <ul>
+          <li><span class="icon">▸</span> Is the right React hook used?</li>
+          <li><span class="icon">▸</span> Look at the component code</li>
+          <li><span class="icon">▸</span> Maybe try another state library</li>
+          <li><span class="icon">▸</span> Restart the dev server</li>
+        </ul>
+      </div>
+
+      <div class="card deep">
+        <h2><span class="icon">🛠️</span> Platform-Aware</h2>
+        <ul>
+          <li><span class="icon">▸</span> HTTP request headers — is caching enabled?</li>
+          <li><span class="icon">▸</span> Is the API returning fresh data?</li>
+          <li><span class="icon">▸</span> Is the frontend caching the response?</li>
+          <li><span class="icon">▸</span> Browser cache / Service Worker</li>
+          <li><span class="icon">▸</span> API response headers (ETag, Cache-Control)</li>
+          <li><span class="icon">▸</span> Is frontend data stored correctly?</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title">Why this distinction matters</h2>
+    <p>
+      Frameworks are incredible productivity tools. They let us ship features fast.
+      But when things break in production — stale data, unexpected cache hits,
+      hydration mismatches, or silent 304s — the answer is almost never "wrong hook".
+    </p>
+    <p>
+      The network tab, the Application tab, response headers, and understanding
+      the full request lifecycle separate junior framework users from senior
+      engineers who can actually diagnose real-world issues.
+    </p>
+
+    <h2 class="section-title">Suggested checklist when data looks wrong</h2>
+    <div class="card" style="border-top: 4px solid #38bdf8;">
+      <ul>
+        <li><span class="icon">1.</span> Open DevTools → Network. Hard refresh (Cmd/Ctrl+Shift+R).</li>
+        <li><span class="icon">2.</span> Check the request: status code, request headers, response headers.</li>
+        <li><span class="icon">3.</span> Look for <code>Cache-Control</code>, <code>ETag</code>, <code>Age</code>, <code>X-Cache</code>.</li>
+        <li><span class="icon">4.</span> Disable cache in Network tab and try again.</li>
+        <li><span class="icon">5.</span> Check Application tab: LocalStorage, IndexedDB, Cache Storage, Service Workers.</li>
+        <li><span class="icon">6.</span> Confirm the API itself is returning the expected payload (not a cached edge response).</li>
+        <li><span class="icon">7.</span> Only then dig into React state, effects, and hooks.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p>Theme project &middot; <a href="https://github.com/devops2626/developer-depth-vs-framework">GitHub</a></p>
+    <p>Inspired by the classic "framework-only vs full-stack thinker" imagery</p>
+  </footer>
+</body>
+</html>
