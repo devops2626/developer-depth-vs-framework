@@ -2,11 +2,12 @@
 
 This project captures the theme of **full-stack understanding** versus **framework-only knowledge** in modern web development (especially React).
 
-## The Core Imagery
+**Live page:** Enable GitHub Pages on the `main` branch (Settings → Pages → Source: Deploy from a branch → main / root) then visit  
+`https://devops2626.github.io/developer-depth-vs-framework/`
 
-![Developer Knowledge Levels](assets/developer-knowledge-levels.jpg)
+## The Core Imagery Theme
 
-The visual contrasts two types of developers debugging the same apparent issue:
+The original visual (shared in the conversation that started this repo) contrasts two types of developers debugging the same apparent issue:
 
 ### 👨‍💻 Framework-Only Developer
 - Checks only if the right React hook is used
@@ -33,15 +34,27 @@ Modern frameworks (React, Next.js, etc.) abstract a lot of complexity. That is p
 
 A developer who only knows the framework will keep changing hooks and state management. A developer who understands the full request lifecycle will look at the network tab first.
 
+## What's in this repo
+
+- `index.html` — Clean, dark-themed educational landing page that expands the concept into a practical debugging checklist
+- This README
+
 ## Project Goals
 
-- Provide a clear, shareable visual for talks and team culture
+- Provide a clear, shareable visual + page for talks and team culture
 - Encourage deeper platform knowledge alongside framework skills
 - Serve as a starting point for more educational content around web fundamentals
 
+## How to use
+
+1. Star / fork if useful
+2. Enable GitHub Pages (see above) to host the landing page
+3. Use the checklist in code reviews or onboarding
+4. Drop the original imagery into `assets/` if you want to host it yourself
+
 ## License
 
-Feel free to use the imagery and text for educational purposes, blog posts, conference talks, and internal training.
+Feel free to use the text, checklist, and theme for educational purposes, blog posts, conference talks, and internal training.
 
 ---
 
