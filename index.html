@@ -314,6 +314,51 @@
     }
 
     /* =========================================================
+       LEAK CARDS
+       ========================================================= */
+
+    .leak-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    @media (max-width: 700px) {
+      .leak-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .leak-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      border-left: 4px solid var(--orange);
+    }
+
+    .leak-item h3 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-2);
+      color: var(--text);
+    }
+
+    .leak-item p {
+      font-size: var(--text-sm);
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .leak-item .depth-note {
+      display: block;
+      margin-top: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    /* =========================================================
        INTERACTIVE CHECKLIST
        ========================================================= */
 
@@ -566,6 +611,72 @@
       the full request lifecycle separate junior framework users from senior
       engineers who can actually diagnose real-world issues.
     </p>
+
+    <!-- Abstraction Leak Section -->
+    <h2 class="section-title">When the framework leaks</h2>
+    <p>
+      Abstractions are useful until they aren’t. Every framework eventually leaks —
+      the moment the nice API can’t hide the underlying system anymore.
+      Depth is what lets you fix the leak instead of waiting for a library patch
+      or a migration guide.
+    </p>
+
+    <div class="leak-grid">
+      <div class="leak-item">
+        <h3>Silent 304 / stale data</h3>
+        <p>
+          The UI shows old content. React state looks fine. The real culprit is
+          a <code>Cache-Control</code> or <code>ETag</code> response the framework
+          never surfaces.
+        </p>
+        <span class="depth-note">Depth: read response headers, not just JSON</span>
+      </div>
+
+      <div class="leak-item">
+        <h3>React StrictMode double effects</h3>
+        <p>
+          Effects fire twice in development. A framework-only view blames “weird React.”
+          Depth knows it’s intentional — and that production won’t double-invoke.
+        </p>
+        <span class="depth-note">Depth: understand the render lifecycle</span>
+      </div>
+
+      <div class="leak-item">
+        <h3>N+1 queries via the ORM</h3>
+        <p>
+          The page is slow. The ORM “just works” until lazy loading triggers
+          dozens of queries. The abstraction hid the cost until traffic hit.
+        </p>
+        <span class="depth-note">Depth: inspect the actual SQL / network waterfall</span>
+      </div>
+
+      <div class="leak-item">
+        <h3>Service Worker / Cache Storage</h3>
+        <p>
+          Users see a broken or outdated UI after a deploy. The framework’s
+          data layer is fine — a Service Worker is serving a previous build.
+        </p>
+        <span class="depth-note">Depth: Application tab → Cache Storage / SW</span>
+      </div>
+
+      <div class="leak-item">
+        <h3>Hydration mismatch</h3>
+        <p>
+          Server HTML doesn’t match the client’s first render. The error message
+          is opaque if you only know component props and not the SSR contract.
+        </p>
+        <span class="depth-note">Depth: know what the server actually sent</span>
+      </div>
+
+      <div class="leak-item">
+        <h3>CSS specificity / cascade fights</h3>
+        <p>
+          Utility classes or CSS-in-JS suddenly “don’t apply.” The framework’s
+          styling layer is fighting the cascade or load order.
+        </p>
+        <span class="depth-note">Depth: inspect computed styles, not just class names</span>
+      </div>
+    </div>
 
     <h2 class="section-title">Interactive debugging checklist</h2>
     <p style="margin-bottom: var(--space-5);">When data looks wrong, work through these steps. Your progress is saved in this browser.</p>
