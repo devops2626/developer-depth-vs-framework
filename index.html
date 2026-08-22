@@ -388,7 +388,7 @@
       gap: 0.85rem;
       padding: 0.85rem var(--space-2);
       border-bottom: 1px solid var(--border-soft);
-      border-radius: var(--radius-lg;
+      border-radius: var(--radius-lg);
       transition: background var(--duration-fast) var(--ease);
       cursor: pointer;
       user-select: none;
@@ -515,7 +515,6 @@
       width: 100%;
     }
 
-    /* Make Giscus blend better with our theme */
     .giscus-container {
       min-height: 200px;
     }
@@ -664,11 +663,18 @@
 
       <div class="card chat-card">
         <div class="giscus-container">
+          <!--
+            SETUP REQUIRED (one-time):
+            1. Repo → Settings → General → Features → enable Discussions
+            2. Visit https://giscus.app → select this repo → pick a category
+            3. Copy the generated data-repo-id and data-category-id below
+            4. Install the Giscus GitHub App when prompted
+          -->
           <script src="https://giscus.app/client.js"
             data-repo="devops2626/developer-depth-vs-framework"
-            data-repo-id="R_kgDOP0f9bA"
+            data-repo-id=""
             data-category="General"
-            data-category-id="DIC_kwDOP0f9bM4CvR8Q"
+            data-category-id=""
             data-mapping="pathname"
             data-strict="0"
             data-reactions-enabled="1"
