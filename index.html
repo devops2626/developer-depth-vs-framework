@@ -5,7 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Developer Depth vs Framework-Only</title>
   <style>
-    :root, [data-theme="dark"] {
+    /* =========================================================
+       DESIGN TOKENS — CSS Custom Properties
+       ========================================================= */
+
+    :root {
+      /* Spacing scale */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+
+      /* Border radius */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --radius-2xl: 16px;
+      --radius-full: 999px;
+
+      /* Typography */
+      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --text-xs: 0.8rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.1rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 2.2rem;
+      --leading: 1.6;
+
+      /* Layout */
+      --max-width: 960px;
+      --check-size: 22px;
+
+      /* Motion */
+      --duration-fast: 0.2s;
+      --duration: 0.25s;
+      --duration-slow: 0.35s;
+      --ease: ease;
+
+      /* Shared (theme-independent) */
+      --danger: #ef4444;
+      --white: #ffffff;
+    }
+
+    /* ---- Dark theme (default) ---- */
+    :root,
+    [data-theme="dark"] {
       --bg: #0d0d12;
       --bg-header: #1e1b4b;
       --card: #1a1a24;
@@ -23,7 +75,7 @@
       --btn-bg: #2a2a35;
       --btn-border: #3f3f4a;
       --btn-hover: #3a3a45;
-      --hover-row: rgba(255,255,255,0.03);
+      --hover-row: rgba(255, 255, 255, 0.03);
       --progress-track: #2a2a35;
       --complete-bg: rgba(34, 197, 94, 0.12);
       --complete-border: rgba(34, 197, 94, 0.35);
@@ -35,6 +87,7 @@
       --gradient-end: #38bdf8;
     }
 
+    /* ---- Light theme ---- */
     [data-theme="light"] {
       --bg: #f8fafc;
       --bg-header: #eef2ff;
@@ -53,7 +106,7 @@
       --btn-bg: #f1f5f9;
       --btn-border: #cbd5e1;
       --btn-hover: #e2e8f0;
-      --hover-row: rgba(0,0,0,0.03);
+      --hover-row: rgba(0, 0, 0, 0.03);
       --progress-track: #e2e8f0;
       --complete-bg: rgba(22, 163, 74, 0.1);
       --complete-border: rgba(22, 163, 74, 0.3);
@@ -65,200 +118,294 @@
       --gradient-end: #0284c7;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* =========================================================
+       BASE
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: var(--leading);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
       min-height: 100vh;
-      transition: background 0.25s ease, color 0.25s ease;
+      transition:
+        background var(--duration) var(--ease),
+        color var(--duration) var(--ease);
     }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
     header {
       text-align: center;
-      padding: 3rem 1rem 2rem;
+      padding: var(--space-12) var(--space-4) var(--space-8);
       background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg) 100%);
       position: relative;
     }
+
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-2);
       background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .subtitle { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
     /* Theme toggle */
     .theme-toggle {
       position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
+      top: var(--space-5);
+      right: var(--space-5);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: var(--space-2);
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 999px;
+      border-radius: var(--radius-full);
       padding: 0.35rem 0.75rem 0.35rem 0.5rem;
       cursor: pointer;
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
       color: var(--text);
-      transition: background 0.2s, border-color 0.2s;
+      transition:
+        background var(--duration-fast) var(--ease),
+        border-color var(--duration-fast) var(--ease);
     }
+
     .theme-toggle:hover {
       background: var(--btn-hover);
     }
+
     .theme-toggle .icon-sun,
     .theme-toggle .icon-moon {
-      font-size: 1.1rem;
+      font-size: var(--text-lg);
       line-height: 1;
     }
+
     .theme-toggle .label {
       font-weight: 500;
     }
 
+    /* =========================================================
+       LAYOUT
+       ========================================================= */
+
     main {
-      max-width: 960px;
+      max-width: var(--max-width);
       margin: 0 auto;
-      padding: 2rem 1rem 4rem;
+      padding: var(--space-8) var(--space-4) var(--space-12);
     }
+
     .comparison {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin: 2rem 0;
+      gap: var(--space-6);
+      margin: var(--space-8) 0;
     }
+
     @media (max-width: 700px) {
-      .comparison { grid-template-columns: 1fr; }
-      .theme-toggle { top: 0.75rem; right: 0.75rem; }
+      .comparison {
+        grid-template-columns: 1fr;
+      }
+      .theme-toggle {
+        top: var(--space-3);
+        right: var(--space-3);
+      }
     }
+
+    /* =========================================================
+       CARDS
+       ========================================================= */
+
     .card {
       background: var(--card);
-      border-radius: 16px;
-      padding: 1.5rem;
+      border-radius: var(--radius-2xl);
+      padding: var(--space-6);
       border: 1px solid var(--border);
-      transition: background 0.25s ease, border-color 0.25s ease;
+      transition:
+        background var(--duration) var(--ease),
+        border-color var(--duration) var(--ease);
     }
-    .card.shallow { border-top: 4px solid var(--orange); }
-    .card.deep { border-top: 4px solid var(--green); }
+
+    .card.shallow {
+      border-top: 4px solid var(--orange);
+    }
+
+    .card.deep {
+      border-top: 4px solid var(--green);
+    }
+
     .card h2 {
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-4);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: var(--space-2);
     }
-    ul { list-style: none; }
+
+    ul {
+      list-style: none;
+    }
+
     li {
-      padding: 0.5rem 0;
+      padding: var(--space-2) 0;
       border-bottom: 1px solid var(--border-soft);
       display: flex;
       align-items: flex-start;
       gap: 0.6rem;
     }
-    li:last-child { border-bottom: none; }
-    .icon { font-size: 1.1rem; }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    .icon {
+      font-size: var(--text-lg);
+    }
+
     .section-title {
-      font-size: 1.5rem;
-      margin: 2.5rem 0 1rem;
+      font-size: var(--text-2xl);
+      margin: var(--space-10) 0 var(--space-4);
       color: var(--section-title);
     }
-    p { margin-bottom: 1rem; color: var(--muted); }
+
+    p {
+      margin-bottom: var(--space-4);
+      color: var(--muted);
+    }
+
     footer {
       text-align: center;
-      padding: 2rem;
+      padding: var(--space-8);
       color: var(--muted);
       font-size: 0.9rem;
       border-top: 1px solid var(--border-soft);
     }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
     code {
       background: var(--code-bg);
       padding: 0.15rem 0.4rem;
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       font-size: 0.9em;
       color: var(--code-text);
     }
 
-    /* ===== Interactive Checklist ===== */
+    /* =========================================================
+       INTERACTIVE CHECKLIST
+       ========================================================= */
+
     .checklist-header {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
     }
+
     .progress-wrap {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--space-3);
       flex: 1;
       min-width: 200px;
     }
+
     .progress-bar {
       flex: 1;
       height: 10px;
       background: var(--progress-track);
-      border-radius: 999px;
+      border-radius: var(--radius-full);
       overflow: hidden;
     }
+
     .progress-fill {
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, var(--blue), var(--green));
-      border-radius: 999px;
-      transition: width 0.35s ease;
+      border-radius: var(--radius-full);
+      transition: width var(--duration-slow) var(--ease);
     }
+
     .progress-text {
       font-size: 0.9rem;
       color: var(--muted);
       white-space: nowrap;
       min-width: 4.5rem;
     }
+
     .btn {
       background: var(--btn-bg);
       color: var(--text);
       border: 1px solid var(--btn-border);
       padding: 0.45rem 0.9rem;
-      border-radius: 8px;
-      font-size: 0.875rem;
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition:
+        background var(--duration-fast) var(--ease),
+        border-color var(--duration-fast) var(--ease);
     }
+
     .btn:hover {
       background: var(--btn-hover);
     }
+
     .btn-reset {
-      color: #ef4444;
+      color: var(--danger);
     }
 
     .checklist {
       list-style: none;
     }
+
     .checklist-item {
       display: flex;
       align-items: flex-start;
       gap: 0.85rem;
-      padding: 0.85rem 0.5rem;
+      padding: 0.85rem var(--space-2);
       border-bottom: 1px solid var(--border-soft);
-      border-radius: 8px;
-      transition: background 0.2s;
+      border-radius: var(--radius-lg);
+      transition: background var(--duration-fast) var(--ease);
       cursor: pointer;
       user-select: none;
     }
+
     .checklist-item:last-child {
       border-bottom: none;
     }
+
     .checklist-item:hover {
       background: var(--hover-row);
     }
+
     .checklist-item.done {
       opacity: 0.75;
     }
+
     .checklist-item.done .item-text {
       text-decoration: line-through;
       color: var(--muted);
@@ -267,31 +414,34 @@
     /* Custom checkbox */
     .check {
       flex-shrink: 0;
-      width: 22px;
-      height: 22px;
+      width: var(--check-size);
+      height: var(--check-size);
       margin-top: 2px;
       border: 2px solid var(--check-border);
-      border-radius: 6px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: all var(--duration-fast) var(--ease);
       background: transparent;
     }
+
     .checklist-item.done .check {
       background: var(--green);
       border-color: var(--green);
     }
+
     .check svg {
       width: 14px;
       height: 14px;
       opacity: 0;
       transform: scale(0.5);
-      transition: all 0.2s;
-      stroke: white;
+      transition: all var(--duration-fast) var(--ease);
+      stroke: var(--white);
       stroke-width: 3;
       fill: none;
     }
+
     .checklist-item.done .check svg {
       opacity: 1;
       transform: scale(1);
@@ -300,35 +450,47 @@
     .item-content {
       flex: 1;
     }
+
     .item-text {
-      font-size: 1rem;
-      transition: color 0.2s, text-decoration 0.2s;
+      font-size: var(--text-base);
+      transition:
+        color var(--duration-fast) var(--ease),
+        text-decoration var(--duration-fast) var(--ease);
     }
+
     .item-hint {
       display: block;
-      font-size: 0.8rem;
+      font-size: var(--text-xs);
       color: var(--hint);
-      margin-top: 0.25rem;
+      margin-top: var(--space-1);
     }
 
     .complete-banner {
       display: none;
-      margin-top: 1.25rem;
-      padding: 1rem 1.25rem;
+      margin-top: var(--space-5);
+      padding: var(--space-4) var(--space-5);
       background: var(--complete-bg);
       border: 1px solid var(--complete-border);
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       color: var(--complete-text);
       text-align: center;
       font-weight: 500;
     }
+
     .complete-banner.show {
       display: block;
-      animation: pop 0.4s ease;
+      animation: pop 0.4s var(--ease);
     }
+
     @keyframes pop {
-      0% { transform: scale(0.95); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+      0% {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -380,7 +542,7 @@
     </p>
 
     <h2 class="section-title">Interactive debugging checklist</h2>
-    <p style="margin-bottom: 1.25rem;">When data looks wrong, work through these steps. Your progress is saved in this browser.</p>
+    <p style="margin-bottom: var(--space-5);">When data looks wrong, work through these steps. Your progress is saved in this browser.</p>
 
     <div class="card" style="border-top: 4px solid var(--blue);">
       <div class="checklist-header">
@@ -495,7 +657,6 @@
       if (saved === 'light' || saved === 'dark') {
         applyTheme(saved);
       } else {
-        // Prefer system preference if no saved choice
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         applyTheme(prefersDark ? 'dark' : 'light');
       }
