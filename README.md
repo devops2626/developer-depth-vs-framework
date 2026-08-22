@@ -47,7 +47,20 @@ A developer who only knows the framework will keep changing hooks and state mana
   - **Dark / Light mode toggle** (top-right)
     - Preference saved in localStorage
     - Falls back to system preference on first visit
+  - **Visitor chat** powered by [Giscus](https://giscus.app) (GitHub Discussions)
 - This README
+
+## Enable visitor chat (Giscus) — one-time setup
+
+1. Go to the repo **Settings → General → Features** and enable **Discussions**.
+2. Visit [https://giscus.app](https://giscus.app).
+3. Select repository: `devops2626/developer-depth-vs-framework`.
+4. Choose a Discussions category (e.g. **General**).
+5. Copy the generated `data-repo-id` and `data-category-id`.
+6. Paste them into the Giscus `<script>` tags in `index.html` (replace the empty values).
+7. Install the **Giscus** GitHub App when prompted.
+
+After that, visitors can sign in with GitHub and chat on the page.
 
 ## Project Goals
 
@@ -61,7 +74,8 @@ A developer who only knows the framework will keep changing hooks and state mana
 2. Enable GitHub Pages (see above) to host the landing page
 3. Use the interactive checklist during real debugging sessions or onboarding
 4. Toggle dark/light mode with the button in the header
-5. Drop the original imagery into `assets/` if you want to host it yourself
+5. Enable Giscus (steps above) so visitors can chat
+6. Drop the original imagery into `assets/` if you want to host it yourself
 
 ## License
 
