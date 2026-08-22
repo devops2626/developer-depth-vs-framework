@@ -5,570 +5,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Developer Depth vs Framework-Only</title>
   <style>
-    /* =========================================================
-       DESIGN TOKENS — CSS Custom Properties
-       ========================================================= */
-
     :root {
-      /* Spacing scale */
-      --space-1: 0.25rem;
-      --space-2: 0.5rem;
-      --space-3: 0.75rem;
-      --space-4: 1rem;
-      --space-5: 1.25rem;
-      --space-6: 1.5rem;
-      --space-8: 2rem;
-      --space-10: 2.5rem;
-      --space-12: 3rem;
-
-      /* Border radius */
-      --radius-sm: 4px;
-      --radius-md: 6px;
-      --radius-lg: 8px;
-      --radius-xl: 12px;
-      --radius-2xl: 16px;
-      --radius-full: 999px;
-
-      /* Typography */
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --radius-sm: 4px; --radius-md: 6px; --radius-lg: 8px; --radius-xl: 12px; --radius-2xl: 16px; --radius-full: 999px;
       --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      --text-xs: 0.8rem;
-      --text-sm: 0.875rem;
-      --text-base: 1rem;
-      --text-lg: 1.1rem;
-      --text-xl: 1.25rem;
-      --text-2xl: 1.5rem;
-      --text-3xl: 2.2rem;
-      --leading: 1.6;
-
-      /* Layout */
-      --max-width: 960px;
-      --check-size: 22px;
-
-      /* Motion */
-      --duration-fast: 0.2s;
-      --duration: 0.25s;
-      --duration-slow: 0.35s;
-      --ease: ease;
-
-      /* Shared (theme-independent) */
-      --danger: #ef4444;
-      --white: #ffffff;
+      --text-xs: 0.8rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.1rem;
+      --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 2.2rem; --leading: 1.6;
+      --max-width: 960px; --check-size: 22px;
+      --duration-fast: 0.2s; --duration: 0.25s; --duration-slow: 0.35s; --ease: ease;
+      --danger: #ef4444; --white: #ffffff;
     }
-
-    /* ---- Dark theme (default) ---- */
-    :root,
-    [data-theme="dark"] {
-      --bg: #0d0d12;
-      --bg-header: #1e1b4b;
-      --card: #1a1a24;
-      --border: #2d2d3a;
-      --border-soft: #2a2a35;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --hint: #64748b;
-      --accent: #7c3aed;
-      --green: #22c55e;
-      --orange: #f97316;
-      --blue: #38bdf8;
-      --code-bg: #2a2a35;
-      --code-text: #e0e7ff;
-      --btn-bg: #2a2a35;
-      --btn-border: #3f3f4a;
-      --btn-hover: #3a3a45;
-      --hover-row: rgba(255, 255, 255, 0.03);
-      --progress-track: #2a2a35;
-      --complete-bg: rgba(34, 197, 94, 0.12);
-      --complete-border: rgba(34, 197, 94, 0.35);
-      --complete-text: #86efac;
-      --section-title: #c4b5fd;
-      --link: #a78bfa;
-      --check-border: #4b5563;
-      --gradient-start: #a78bfa;
-      --gradient-end: #38bdf8;
+    :root, [data-theme="dark"] {
+      --bg: #0d0d12; --bg-header: #1e1b4b; --card: #1a1a24; --border: #2d2d3a; --border-soft: #2a2a35;
+      --text: #e2e8f0; --muted: #94a3b8; --hint: #64748b; --accent: #7c3aed; --green: #22c55e;
+      --orange: #f97316; --blue: #38bdf8; --code-bg: #2a2a35; --code-text: #e0e7ff;
+      --btn-bg: #2a2a35; --btn-border: #3f3f4a; --btn-hover: #3a3a45; --hover-row: rgba(255,255,255,0.03);
+      --progress-track: #2a2a35; --complete-bg: rgba(34,197,94,0.12); --complete-border: rgba(34,197,94,0.35);
+      --complete-text: #86efac; --section-title: #c4b5fd; --link: #a78bfa; --check-border: #4b5563;
+      --gradient-start: #a78bfa; --gradient-end: #38bdf8;
     }
-
-    /* ---- Light theme ---- */
     [data-theme="light"] {
-      --bg: #f8fafc;
-      --bg-header: #eef2ff;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --border-soft: #e2e8f0;
-      --text: #0f172a;
-      --muted: #475569;
-      --hint: #64748b;
-      --accent: #7c3aed;
-      --green: #16a34a;
-      --orange: #ea580c;
-      --blue: #0284c7;
-      --code-bg: #f1f5f9;
-      --code-text: #334155;
-      --btn-bg: #f1f5f9;
-      --btn-border: #cbd5e1;
-      --btn-hover: #e2e8f0;
-      --hover-row: rgba(0, 0, 0, 0.03);
-      --progress-track: #e2e8f0;
-      --complete-bg: rgba(22, 163, 74, 0.1);
-      --complete-border: rgba(22, 163, 74, 0.3);
-      --complete-text: #15803d;
-      --section-title: #5b21b6;
-      --link: #6d28d9;
-      --check-border: #94a3b8;
-      --gradient-start: #7c3aed;
-      --gradient-end: #0284c7;
+      --bg: #f8fafc; --bg-header: #eef2ff; --card: #ffffff; --border: #e2e8f0; --border-soft: #e2e8f0;
+      --text: #0f172a; --muted: #475569; --hint: #64748b; --accent: #7c3aed; --green: #16a34a;
+      --orange: #ea580c; --blue: #0284c7; --code-bg: #f1f5f9; --code-text: #334155;
+      --btn-bg: #f1f5f9; --btn-border: #cbd5e1; --btn-hover: #e2e8f0; --hover-row: rgba(0,0,0,0.03);
+      --progress-track: #e2e8f0; --complete-bg: rgba(22,163,74,0.1); --complete-border: rgba(22,163,74,0.3);
+      --complete-text: #15803d; --section-title: #5b21b6; --link: #6d28d9; --check-border: #94a3b8;
+      --gradient-start: #7c3aed; --gradient-end: #0284c7;
     }
-
-    /* =========================================================
-       BASE
-       ========================================================= */
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: var(--font-sans);
-      font-size: var(--text-base);
-      line-height: var(--leading);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      transition:
-        background var(--duration) var(--ease),
-        color var(--duration) var(--ease);
+      font-family: var(--font-sans); font-size: var(--text-base); line-height: var(--leading);
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
     }
-
-    /* =========================================================
-       HEADER
-       ========================================================= */
-
     header {
-      text-align: center;
-      padding: var(--space-12) var(--space-4) var(--space-8);
-      background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg) 100%);
-      position: relative;
+      text-align: center; padding: var(--space-12) var(--space-4) var(--space-8);
+      background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg) 100%); position: relative;
     }
-
     h1 {
-      font-size: var(--text-3xl);
-      margin-bottom: var(--space-2);
+      font-size: var(--text-3xl); margin-bottom: var(--space-2);
       background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
-    .subtitle {
-      color: var(--muted);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Theme toggle */
+    .subtitle { color: var(--muted); max-width: 600px; margin: 0 auto; }
     .theme-toggle {
-      position: absolute;
-      top: var(--space-5);
-      right: var(--space-5);
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      padding: 0.35rem 0.75rem 0.35rem 0.5rem;
-      cursor: pointer;
-      font-size: var(--text-sm);
-      color: var(--text);
-      transition:
-        background var(--duration-fast) var(--ease),
-        border-color var(--duration-fast) var(--ease);
+      position: absolute; top: var(--space-5); right: var(--space-5);
+      display: flex; align-items: center; gap: var(--space-2);
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-full);
+      padding: 0.35rem 0.75rem 0.35rem 0.5rem; cursor: pointer; font-size: var(--text-sm); color: var(--text);
+      transition: background var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
     }
-
-    .theme-toggle:hover {
-      background: var(--btn-hover);
-    }
-
-    .theme-toggle .icon-sun,
-    .theme-toggle .icon-moon {
-      font-size: var(--text-lg);
-      line-height: 1;
-    }
-
-    .theme-toggle .label {
-      font-weight: 500;
-    }
-
-    /* =========================================================
-       LAYOUT
-       ========================================================= */
-
-    main {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: var(--space-8) var(--space-4) var(--space-12);
-    }
-
-    .comparison {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-6);
-      margin: var(--space-8) 0;
-    }
-
+    .theme-toggle:hover { background: var(--btn-hover); }
+    .theme-toggle .label { font-weight: 500; }
+    main { max-width: var(--max-width); margin: 0 auto; padding: var(--space-8) var(--space-4) var(--space-12); }
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin: var(--space-8) 0; }
     @media (max-width: 700px) {
-      .comparison {
-        grid-template-columns: 1fr;
-      }
-      .theme-toggle {
-        top: var(--space-3);
-        right: var(--space-3);
-      }
+      .comparison { grid-template-columns: 1fr; }
+      .theme-toggle { top: var(--space-3); right: var(--space-3); }
     }
-
-    /* =========================================================
-       CARDS
-       ========================================================= */
-
     .card {
-      background: var(--card);
-      border-radius: var(--radius-2xl);
-      padding: var(--space-6);
+      background: var(--card); border-radius: var(--radius-2xl); padding: var(--space-6);
       border: 1px solid var(--border);
-      transition:
-        background var(--duration) var(--ease),
-        border-color var(--duration) var(--ease);
+      transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
     }
+    .card.shallow { border-top: 4px solid var(--orange); }
+    .card.deep { border-top: 4px solid var(--green); }
+    .card h2 { font-size: var(--text-xl); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2); }
+    ul { list-style: none; }
+    li { padding: var(--space-2) 0; border-bottom: 1px solid var(--border-soft); display: flex; align-items: flex-start; gap: 0.6rem; }
+    li:last-child { border-bottom: none; }
+    .icon { font-size: var(--text-lg); }
+    .section-title { font-size: var(--text-2xl); margin: var(--space-10) 0 var(--space-4); color: var(--section-title); }
+    p { margin-bottom: var(--space-4); color: var(--muted); }
+    footer { text-align: center; padding: var(--space-8); color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border-soft); }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { background: var(--code-bg); padding: 0.15rem 0.4rem; border-radius: var(--radius-sm); font-size: 0.9em; color: var(--code-text); }
 
-    .card.shallow {
-      border-top: 4px solid var(--orange);
-    }
-
-    .card.deep {
-      border-top: 4px solid var(--green);
-    }
-
-    .card h2 {
-      font-size: var(--text-xl);
-      margin-bottom: var(--space-4);
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    li {
-      padding: var(--space-2) 0;
-      border-bottom: 1px solid var(--border-soft);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-    }
-
-    li:last-child {
-      border-bottom: none;
-    }
-
-    .icon {
-      font-size: var(--text-lg);
-    }
-
-    .section-title {
-      font-size: var(--text-2xl);
-      margin: var(--space-10) 0 var(--space-4);
-      color: var(--section-title);
-    }
-
-    p {
-      margin-bottom: var(--space-4);
-      color: var(--muted);
-    }
-
-    footer {
-      text-align: center;
-      padding: var(--space-8);
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--border-soft);
-    }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    code {
-      background: var(--code-bg);
-      padding: 0.15rem 0.4rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.9em;
-      color: var(--code-text);
-    }
-
-    /* =========================================================
-       LEAK CARDS
-       ========================================================= */
-
-    .leak-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-4);
-      margin-top: var(--space-4);
-    }
-
-    @media (max-width: 700px) {
-      .leak-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    /* Leak cards */
+    .leak-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-4); }
+    @media (max-width: 700px) { .leak-grid { grid-template-columns: 1fr; } }
     .leak-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-5);
-      border-left: 4px solid var(--orange);
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-5); border-left: 4px solid var(--orange);
     }
+    .leak-item h3 { font-size: var(--text-base); margin-bottom: var(--space-2); color: var(--text); }
+    .leak-item p { font-size: var(--text-sm); margin-bottom: 0; color: var(--muted); }
+    .leak-item .depth-note { display: block; margin-top: var(--space-2); font-size: var(--text-xs); color: var(--green); font-weight: 500; }
 
-    .leak-item h3 {
-      font-size: var(--text-base);
-      margin-bottom: var(--space-2);
-      color: var(--text);
-    }
-
-    .leak-item p {
-      font-size: var(--text-sm);
-      margin-bottom: 0;
-      color: var(--muted);
-    }
-
-    .leak-item .depth-note {
-      display: block;
-      margin-top: var(--space-2);
-      font-size: var(--text-xs);
-      color: var(--green);
-      font-weight: 500;
-    }
-
-    /* =========================================================
-       INTERACTIVE CHECKLIST
-       ========================================================= */
-
+    /* Shared interactive checklist */
     .checklist-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-4);
-      margin-bottom: var(--space-5);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: var(--space-4); margin-bottom: var(--space-5);
     }
-
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .progress-bar {
-      flex: 1;
-      height: 10px;
-      background: var(--progress-track);
-      border-radius: var(--radius-full);
-      overflow: hidden;
-    }
-
+    .progress-wrap { display: flex; align-items: center; gap: var(--space-3); flex: 1; min-width: 200px; }
+    .progress-bar { flex: 1; height: 10px; background: var(--progress-track); border-radius: var(--radius-full); overflow: hidden; }
     .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--blue), var(--green));
-      border-radius: var(--radius-full);
-      transition: width var(--duration-slow) var(--ease);
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--blue), var(--green));
+      border-radius: var(--radius-full); transition: width var(--duration-slow) var(--ease);
     }
-
-    .progress-text {
-      font-size: 0.9rem;
-      color: var(--muted);
-      white-space: nowrap;
-      min-width: 4.5rem;
-    }
-
+    .progress-text { font-size: 0.9rem; color: var(--muted); white-space: nowrap; min-width: 4.5rem; }
     .btn {
-      background: var(--btn-bg);
-      color: var(--text);
-      border: 1px solid var(--btn-border);
-      padding: 0.45rem 0.9rem;
-      border-radius: var(--radius-lg);
-      font-size: var(--text-sm);
-      cursor: pointer;
-      transition:
-        background var(--duration-fast) var(--ease),
-        border-color var(--duration-fast) var(--ease);
+      background: var(--btn-bg); color: var(--text); border: 1px solid var(--btn-border);
+      padding: 0.45rem 0.9rem; border-radius: var(--radius-lg); font-size: var(--text-sm); cursor: pointer;
+      transition: background var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
     }
-
-    .btn:hover {
-      background: var(--btn-hover);
-    }
-
-    .btn-reset {
-      color: var(--danger);
-    }
-
-    .checklist {
-      list-style: none;
-    }
-
+    .btn:hover { background: var(--btn-hover); }
+    .btn-reset { color: var(--danger); }
+    .checklist { list-style: none; }
     .checklist-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      padding: 0.85rem var(--space-2);
-      border-bottom: 1px solid var(--border-soft);
-      border-radius: var(--radius-lg);
-      transition: background var(--duration-fast) var(--ease);
-      cursor: pointer;
-      user-select: none;
+      display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.85rem var(--space-2);
+      border-bottom: 1px solid var(--border-soft); border-radius: var(--radius-lg);
+      transition: background var(--duration-fast) var(--ease); cursor: pointer; user-select: none;
     }
-
-    .checklist-item:last-child {
-      border-bottom: none;
-    }
-
-    .checklist-item:hover {
-      background: var(--hover-row);
-    }
-
-    .checklist-item.done {
-      opacity: 0.75;
-    }
-
-    .checklist-item.done .item-text {
-      text-decoration: line-through;
-      color: var(--muted);
-    }
-
-    /* Custom checkbox */
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item:hover { background: var(--hover-row); }
+    .checklist-item.done { opacity: 0.75; }
+    .checklist-item.done .item-text { text-decoration: line-through; color: var(--muted); }
     .check {
-      flex-shrink: 0;
-      width: var(--check-size);
-      height: var(--check-size);
-      margin-top: 2px;
-      border: 2px solid var(--check-border);
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all var(--duration-fast) var(--ease);
-      background: transparent;
+      flex-shrink: 0; width: var(--check-size); height: var(--check-size); margin-top: 2px;
+      border: 2px solid var(--check-border); border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--duration-fast) var(--ease); background: transparent;
     }
-
-    .checklist-item.done .check {
-      background: var(--green);
-      border-color: var(--green);
-    }
-
+    .checklist-item.done .check { background: var(--green); border-color: var(--green); }
     .check svg {
-      width: 14px;
-      height: 14px;
-      opacity: 0;
-      transform: scale(0.5);
-      transition: all var(--duration-fast) var(--ease);
-      stroke: var(--white);
-      stroke-width: 3;
-      fill: none;
+      width: 14px; height: 14px; opacity: 0; transform: scale(0.5);
+      transition: all var(--duration-fast) var(--ease); stroke: var(--white); stroke-width: 3; fill: none;
     }
-
-    .checklist-item.done .check svg {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .item-content {
-      flex: 1;
-    }
-
-    .item-text {
-      font-size: var(--text-base);
-      transition:
-        color var(--duration-fast) var(--ease),
-        text-decoration var(--duration-fast) var(--ease);
-    }
-
-    .item-hint {
-      display: block;
-      font-size: var(--text-xs);
-      color: var(--hint);
-      margin-top: var(--space-1);
-    }
-
+    .checklist-item.done .check svg { opacity: 1; transform: scale(1); }
+    .item-content { flex: 1; }
+    .item-text { font-size: var(--text-base); transition: color var(--duration-fast) var(--ease), text-decoration var(--duration-fast) var(--ease); }
+    .item-hint { display: block; font-size: var(--text-xs); color: var(--hint); margin-top: var(--space-1); }
     .complete-banner {
-      display: none;
-      margin-top: var(--space-5);
-      padding: var(--space-4) var(--space-5);
-      background: var(--complete-bg);
-      border: 1px solid var(--complete-border);
-      border-radius: var(--radius-xl);
-      color: var(--complete-text);
-      text-align: center;
-      font-weight: 500;
+      display: none; margin-top: var(--space-5); padding: var(--space-4) var(--space-5);
+      background: var(--complete-bg); border: 1px solid var(--complete-border); border-radius: var(--radius-xl);
+      color: var(--complete-text); text-align: center; font-weight: 500;
+    }
+    .complete-banner.show { display: block; animation: pop 0.4s var(--ease); }
+    @keyframes pop { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    /* Drill cards */
+    .drill-steps { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+    .drill-step {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-5); border-left: 4px solid var(--blue);
+    }
+    .drill-step h3 { font-size: var(--text-base); margin-bottom: var(--space-2); color: var(--text); }
+    .drill-step p { font-size: var(--text-sm); margin-bottom: 0; color: var(--muted); }
+    .drill-step .step-num {
+      display: inline-block; background: var(--blue); color: var(--white); font-size: var(--text-xs);
+      font-weight: 700; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); margin-bottom: var(--space-2);
     }
 
-    .complete-banner.show {
-      display: block;
-      animation: pop 0.4s var(--ease);
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(0.95);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    /* =========================================================
-       VISITOR CHAT (Giscus)
-       ========================================================= */
-
-    .chat-section {
-      margin-top: var(--space-10);
-    }
-
-    .chat-card {
-      border-top: 4px solid var(--accent);
-    }
-
-    .chat-intro {
-      margin-bottom: var(--space-6);
-      color: var(--muted);
-    }
-
-    .giscus,
-    .giscus-frame {
-      width: 100%;
-    }
-
-    .giscus-container {
-      min-height: 200px;
-    }
+    .chat-section { margin-top: var(--space-10); }
+    .chat-card { border-top: 4px solid var(--accent); }
+    .chat-intro { margin-bottom: var(--space-6); color: var(--muted); }
+    .giscus, .giscus-frame { width: 100%; }
+    .giscus-container { min-height: 200px; }
   </style>
 </head>
 <body>
   <header>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light mode">
-      <span class="icon-moon" id="themeIcon">🌙</span>
+      <span id="themeIcon">🌙</span>
       <span class="label" id="themeLabel">Dark</span>
     </button>
     <h1>Framework-Only vs Deep Developer</h1>
@@ -586,7 +188,6 @@
           <li><span class="icon">▸</span> Restart the dev server</li>
         </ul>
       </div>
-
       <div class="card deep">
         <h2><span class="icon">🛠️</span> Platform-Aware</h2>
         <ul>
@@ -612,7 +213,6 @@
       engineers who can actually diagnose real-world issues.
     </p>
 
-    <!-- Abstraction Leak Section -->
     <h2 class="section-title">When the framework leaks</h2>
     <p>
       Abstractions are useful until they aren’t. Every framework eventually leaks —
@@ -620,146 +220,188 @@
       Depth is what lets you fix the leak instead of waiting for a library patch
       or a migration guide.
     </p>
-
     <div class="leak-grid">
       <div class="leak-item">
         <h3>Silent 304 / stale data</h3>
-        <p>
-          The UI shows old content. React state looks fine. The real culprit is
-          a <code>Cache-Control</code> or <code>ETag</code> response the framework
-          never surfaces.
-        </p>
+        <p>The UI shows old content. React state looks fine. The real culprit is a <code>Cache-Control</code> or <code>ETag</code> response the framework never surfaces.</p>
         <span class="depth-note">Depth: read response headers, not just JSON</span>
       </div>
-
       <div class="leak-item">
         <h3>React StrictMode double effects</h3>
-        <p>
-          Effects fire twice in development. A framework-only view blames “weird React.”
-          Depth knows it’s intentional — and that production won’t double-invoke.
-        </p>
+        <p>Effects fire twice in development. A framework-only view blames “weird React.” Depth knows it’s intentional — and that production won’t double-invoke.</p>
         <span class="depth-note">Depth: understand the render lifecycle</span>
       </div>
-
       <div class="leak-item">
         <h3>N+1 queries via the ORM</h3>
-        <p>
-          The page is slow. The ORM “just works” until lazy loading triggers
-          dozens of queries. The abstraction hid the cost until traffic hit.
-        </p>
+        <p>The page is slow. The ORM “just works” until lazy loading triggers dozens of queries. The abstraction hid the cost until traffic hit.</p>
         <span class="depth-note">Depth: inspect the actual SQL / network waterfall</span>
       </div>
-
       <div class="leak-item">
         <h3>Service Worker / Cache Storage</h3>
-        <p>
-          Users see a broken or outdated UI after a deploy. The framework’s
-          data layer is fine — a Service Worker is serving a previous build.
-        </p>
+        <p>Users see a broken or outdated UI after a deploy. The framework’s data layer is fine — a Service Worker is serving a previous build.</p>
         <span class="depth-note">Depth: Application tab → Cache Storage / SW</span>
       </div>
-
       <div class="leak-item">
         <h3>Hydration mismatch</h3>
-        <p>
-          Server HTML doesn’t match the client’s first render. The error message
-          is opaque if you only know component props and not the SSR contract.
-        </p>
+        <p>Server HTML doesn’t match the client’s first render. The error message is opaque if you only know component props and not the SSR contract.</p>
         <span class="depth-note">Depth: know what the server actually sent</span>
       </div>
-
       <div class="leak-item">
         <h3>CSS specificity / cascade fights</h3>
-        <p>
-          Utility classes or CSS-in-JS suddenly “don’t apply.” The framework’s
-          styling layer is fighting the cascade or load order.
-        </p>
+        <p>Utility classes or CSS-in-JS suddenly “don’t apply.” The framework’s styling layer is fighting the cascade or load order.</p>
         <span class="depth-note">Depth: inspect computed styles, not just class names</span>
       </div>
     </div>
 
+    <!-- Interactive debugging checklist -->
     <h2 class="section-title">Interactive debugging checklist</h2>
-    <p style="margin-bottom: var(--space-5);">When data looks wrong, work through these steps. Your progress is saved in this browser.</p>
-
-    <div class="card" style="border-top: 4px solid var(--blue);">
+    <p style="margin-bottom: var(--space-5);">When data looks wrong, work through these steps. Progress is saved in this browser.</p>
+    <div class="card" style="border-top: 4px solid var(--blue);" data-checklist="debug">
       <div class="checklist-header">
         <div class="progress-wrap">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          <span class="progress-text" id="progressText">0 / 7</span>
+          <div class="progress-bar"><div class="progress-fill" data-progress></div></div>
+          <span class="progress-text" data-count>0 / 7</span>
         </div>
-        <button class="btn btn-reset" id="resetBtn" type="button">Reset</button>
+        <button class="btn btn-reset" type="button" data-reset>Reset</button>
       </div>
-
-      <ul class="checklist" id="checklist">
-        <li class="checklist-item" data-id="1">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+      <ul class="checklist">
+        <li class="checklist-item" data-id="d1">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Open DevTools → Network. Hard refresh (Cmd/Ctrl+Shift+R)</span>
             <span class="item-hint">Bypass browser cache so you see real requests</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="2">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d2">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Inspect the request: status code, request headers, response headers</span>
             <span class="item-hint">Look for 200, 304, 404, or unexpected redirects</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="3">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d3">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Check <code>Cache-Control</code>, <code>ETag</code>, <code>Age</code>, <code>X-Cache</code></span>
             <span class="item-hint">These headers reveal caching layers (browser, CDN, edge)</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="4">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d4">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Disable cache in Network tab and retry</span>
             <span class="item-hint">Confirm the problem disappears when cache is forced off</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="5">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d5">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Check Application tab: LocalStorage, IndexedDB, Cache Storage, Service Workers</span>
             <span class="item-hint">Stale client-side data is a very common culprit</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="6">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d6">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Confirm the API itself returns the expected fresh payload</span>
             <span class="item-hint">Hit the endpoint directly or via a tool that bypasses the frontend</span>
           </div>
         </li>
-        <li class="checklist-item" data-id="7">
-          <div class="check">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+        <li class="checklist-item" data-id="d7">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="item-content">
             <span class="item-text">Only then dig into React state, effects, and hooks</span>
             <span class="item-hint">Framework issues come last — after the platform is verified</span>
           </div>
         </li>
       </ul>
+      <div class="complete-banner" data-banner>🎉 All steps checked — you investigated the full stack. Nice work!</div>
+    </div>
 
-      <div class="complete-banner" id="completeBanner">
-        🎉 All steps checked — you investigated the full stack. Nice work!
+    <!-- Interactive leak recognition checklist -->
+    <h2 class="section-title">Abstraction leak checklist</h2>
+    <p style="margin-bottom: var(--space-5);">Can you recognize these leaks when they show up? Check each one off as you internalize it.</p>
+    <div class="card" style="border-top: 4px solid var(--orange);" data-checklist="leaks">
+      <div class="checklist-header">
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" data-progress></div></div>
+          <span class="progress-text" data-count>0 / 6</span>
+        </div>
+        <button class="btn btn-reset" type="button" data-reset>Reset</button>
+      </div>
+      <ul class="checklist">
+        <li class="checklist-item" data-id="l1">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Stale UI + healthy React state → check response headers first</span>
+            <span class="item-hint">304 / Cache-Control / ETag often explain “impossible” data</span>
+          </div>
+        </li>
+        <li class="checklist-item" data-id="l2">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Double effect in dev is often StrictMode, not a bug</span>
+            <span class="item-hint">Production will not double-invoke the same way</span>
+          </div>
+        </li>
+        <li class="checklist-item" data-id="l3">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Slow page + ORM → look for N+1 in the network / SQL waterfall</span>
+            <span class="item-hint">Lazy loading hides cost until load increases</span>
+          </div>
+        </li>
+        <li class="checklist-item" data-id="l4">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Broken UI after deploy → check Service Worker & Cache Storage</span>
+            <span class="item-hint">Old assets can outlive your new release</span>
+          </div>
+        </li>
+        <li class="checklist-item" data-id="l5">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Hydration error → compare server HTML to first client render</span>
+            <span class="item-hint">The mismatch is in the SSR contract, not just props</span>
+          </div>
+        </li>
+        <li class="checklist-item" data-id="l6">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="item-content">
+            <span class="item-text">Styles “not applying” → inspect computed styles & cascade</span>
+            <span class="item-hint">Framework class names can still lose the specificity fight</span>
+          </div>
+        </li>
+      </ul>
+      <div class="complete-banner" data-banner>🎉 You can spot the common leaks. That’s depth in action.</div>
+    </div>
+
+    <!-- Remove the Framework drill -->
+    <h2 class="section-title">Remove the Framework drill</h2>
+    <p>
+      A practical way to build depth: take something the framework does for you,
+      strip it back to the platform, then put the framework back on with clearer eyes.
+    </p>
+    <div class="drill-steps">
+      <div class="drill-step">
+        <span class="step-num">1</span>
+        <h3>Pick a small feature</h3>
+        <p>Choose something you recently built with the framework — a filtered list, a form submit, a client-side route, or a data fetch with loading/error states.</p>
+      </div>
+      <div class="drill-step">
+        <span class="step-num">2</span>
+        <h3>Rewrite it in vanilla JS (or minimal platform APIs)</h3>
+        <p>No React, no router, no data library. Use <code>fetch</code>, DOM APIs, <code>history.pushState</code>, and plain event listeners. Notice what you have to handle yourself.</p>
+      </div>
+      <div class="drill-step">
+        <span class="step-num">3</span>
+        <h3>List what the framework was doing</h3>
+        <p>Diff the two versions mentally: re-renders, dependency tracking, cache keys, cancellation, error boundaries, routing sync. Write the list down — that’s the abstraction surface.</p>
+      </div>
+      <div class="drill-step">
+        <span class="step-num">4</span>
+        <h3>Put the framework back — on purpose</h3>
+        <p>Re-implement with the framework, but only after you can explain each piece it owns. You’ll debug faster the next time one of those pieces leaks.</p>
       </div>
     </div>
 
@@ -771,16 +413,8 @@
         <a href="https://giscus.app" target="_blank" rel="noopener">Giscus</a>
         (GitHub Discussions) — sign in with GitHub to join the conversation.
       </p>
-
       <div class="card chat-card">
         <div class="giscus-container">
-          <!--
-            SETUP REQUIRED (one-time):
-            1. Repo → Settings → General → Features → enable Discussions
-            2. Visit https://giscus.app → select this repo → pick a category
-            3. Copy the generated data-repo-id and data-category-id below
-            4. Install the Giscus GitHub App when prompted
-          -->
           <script src="https://giscus.app/client.js"
             data-repo="devops2626/developer-depth-vs-framework"
             data-repo-id=""
@@ -808,7 +442,7 @@
   </footer>
 
   <script>
-    // ===== Theme toggle =====
+    // Theme
     const THEME_KEY = 'dev-depth-theme';
     const html = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
@@ -817,16 +451,9 @@
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
-      if (theme === 'light') {
-        themeIcon.textContent = '☀️';
-        themeLabel.textContent = 'Light';
-      } else {
-        themeIcon.textContent = '🌙';
-        themeLabel.textContent = 'Dark';
-      }
+      themeIcon.textContent = theme === 'light' ? '☀️' : '🌙';
+      themeLabel.textContent = theme === 'light' ? 'Light' : 'Dark';
       localStorage.setItem(THEME_KEY, theme);
-
-      // Keep Giscus in sync with our theme
       const iframe = document.querySelector('iframe.giscus-frame');
       if (iframe) {
         iframe.contentWindow.postMessage(
@@ -838,72 +465,60 @@
 
     function loadTheme() {
       const saved = localStorage.getItem(THEME_KEY);
-      if (saved === 'light' || saved === 'dark') {
-        applyTheme(saved);
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        applyTheme(prefersDark ? 'dark' : 'light');
-      }
+      if (saved === 'light' || saved === 'dark') applyTheme(saved);
+      else applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     }
 
     themeToggle.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme') || 'dark';
-      applyTheme(current === 'dark' ? 'light' : 'dark');
+      applyTheme((html.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark');
     });
-
     loadTheme();
 
-    // ===== Checklist =====
-    const STORAGE_KEY = 'dev-depth-checklist';
-    const items = document.querySelectorAll('.checklist-item');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    const completeBanner = document.getElementById('completeBanner');
-    const resetBtn = document.getElementById('resetBtn');
-    const total = items.length;
+    // Reusable checklist init
+    function initChecklist(root) {
+      const key = 'dev-depth-checklist-' + root.dataset.checklist;
+      const items = root.querySelectorAll('.checklist-item');
+      const progressFill = root.querySelector('[data-progress]');
+      const progressText = root.querySelector('[data-count]');
+      const banner = root.querySelector('[data-banner]');
+      const resetBtn = root.querySelector('[data-reset]');
+      const total = items.length;
 
-    function loadState() {
+      function update() {
+        const done = root.querySelectorAll('.checklist-item.done').length;
+        progressFill.style.width = (done / total * 100) + '%';
+        progressText.textContent = done + ' / ' + total;
+        banner.classList.toggle('show', done === total);
+      }
+
+      function save() {
+        const state = {};
+        items.forEach(item => { state[item.dataset.id] = item.classList.contains('done'); });
+        localStorage.setItem(key, JSON.stringify(state));
+      }
+
       try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        items.forEach(item => {
-          const id = item.dataset.id;
-          if (saved[id]) item.classList.add('done');
-        });
+        const saved = JSON.parse(localStorage.getItem(key) || '{}');
+        items.forEach(item => { if (saved[item.dataset.id]) item.classList.add('done'); });
       } catch (e) {}
-      updateProgress();
-    }
+      update();
 
-    function saveState() {
-      const state = {};
       items.forEach(item => {
-        state[item.dataset.id] = item.classList.contains('done');
+        item.addEventListener('click', () => {
+          item.classList.toggle('done');
+          save();
+          update();
+        });
       });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+      resetBtn.addEventListener('click', () => {
+        items.forEach(item => item.classList.remove('done'));
+        localStorage.removeItem(key);
+        update();
+      });
     }
 
-    function updateProgress() {
-      const done = document.querySelectorAll('.checklist-item.done').length;
-      const pct = (done / total) * 100;
-      progressFill.style.width = pct + '%';
-      progressText.textContent = done + ' / ' + total;
-      completeBanner.classList.toggle('show', done === total);
-    }
-
-    items.forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('done');
-        saveState();
-        updateProgress();
-      });
-    });
-
-    resetBtn.addEventListener('click', () => {
-      items.forEach(item => item.classList.remove('done'));
-      localStorage.removeItem(STORAGE_KEY);
-      updateProgress();
-    });
-
-    loadState();
+    document.querySelectorAll('[data-checklist]').forEach(initChecklist);
   </script>
 </body>
 </html>
