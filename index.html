@@ -1,20 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Developer Depth vs Framework-Only</title>
   <style>
-    :root {
+    :root, [data-theme="dark"] {
       --bg: #0d0d12;
+      --bg-header: #1e1b4b;
       --card: #1a1a24;
-      --accent: #7c3aed;
+      --border: #2d2d3a;
+      --border-soft: #2a2a35;
       --text: #e2e8f0;
       --muted: #94a3b8;
+      --hint: #64748b;
+      --accent: #7c3aed;
       --green: #22c55e;
       --orange: #f97316;
       --blue: #38bdf8;
+      --code-bg: #2a2a35;
+      --code-text: #e0e7ff;
+      --btn-bg: #2a2a35;
+      --btn-border: #3f3f4a;
+      --btn-hover: #3a3a45;
+      --hover-row: rgba(255,255,255,0.03);
+      --progress-track: #2a2a35;
+      --complete-bg: rgba(34, 197, 94, 0.12);
+      --complete-border: rgba(34, 197, 94, 0.35);
+      --complete-text: #86efac;
+      --section-title: #c4b5fd;
+      --link: #a78bfa;
+      --check-border: #4b5563;
+      --gradient-start: #a78bfa;
+      --gradient-end: #38bdf8;
     }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-header: #eef2ff;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --border-soft: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --hint: #64748b;
+      --accent: #7c3aed;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --blue: #0284c7;
+      --code-bg: #f1f5f9;
+      --code-text: #334155;
+      --btn-bg: #f1f5f9;
+      --btn-border: #cbd5e1;
+      --btn-hover: #e2e8f0;
+      --hover-row: rgba(0,0,0,0.03);
+      --progress-track: #e2e8f0;
+      --complete-bg: rgba(22, 163, 74, 0.1);
+      --complete-border: rgba(22, 163, 74, 0.3);
+      --complete-text: #15803d;
+      --section-title: #5b21b6;
+      --link: #6d28d9;
+      --check-border: #94a3b8;
+      --gradient-start: #7c3aed;
+      --gradient-end: #0284c7;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -22,20 +72,53 @@
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
     }
     header {
       text-align: center;
       padding: 3rem 1rem 2rem;
-      background: linear-gradient(180deg, #1e1b4b 0%, var(--bg) 100%);
+      background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg) 100%);
+      position: relative;
     }
     h1 {
       font-size: 2.2rem;
       margin-bottom: 0.5rem;
-      background: linear-gradient(90deg, #a78bfa, #38bdf8);
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .subtitle { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem 0.35rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--text);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .theme-toggle:hover {
+      background: var(--btn-hover);
+    }
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .theme-toggle .label {
+      font-weight: 500;
+    }
+
     main {
       max-width: 960px;
       margin: 0 auto;
@@ -49,12 +132,14 @@
     }
     @media (max-width: 700px) {
       .comparison { grid-template-columns: 1fr; }
+      .theme-toggle { top: 0.75rem; right: 0.75rem; }
     }
     .card {
       background: var(--card);
       border-radius: 16px;
       padding: 1.5rem;
-      border: 1px solid #2d2d3a;
+      border: 1px solid var(--border);
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
     .card.shallow { border-top: 4px solid var(--orange); }
     .card.deep { border-top: 4px solid var(--green); }
@@ -68,7 +153,7 @@
     ul { list-style: none; }
     li {
       padding: 0.5rem 0;
-      border-bottom: 1px solid #2a2a35;
+      border-bottom: 1px solid var(--border-soft);
       display: flex;
       align-items: flex-start;
       gap: 0.6rem;
@@ -78,7 +163,7 @@
     .section-title {
       font-size: 1.5rem;
       margin: 2.5rem 0 1rem;
-      color: #c4b5fd;
+      color: var(--section-title);
     }
     p { margin-bottom: 1rem; color: var(--muted); }
     footer {
@@ -86,16 +171,16 @@
       padding: 2rem;
       color: var(--muted);
       font-size: 0.9rem;
-      border-top: 1px solid #2a2a35;
+      border-top: 1px solid var(--border-soft);
     }
-    a { color: #a78bfa; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
     code {
-      background: #2a2a35;
+      background: var(--code-bg);
       padding: 0.15rem 0.4rem;
       border-radius: 4px;
       font-size: 0.9em;
-      color: #e0e7ff;
+      color: var(--code-text);
     }
 
     /* ===== Interactive Checklist ===== */
@@ -117,14 +202,14 @@
     .progress-bar {
       flex: 1;
       height: 10px;
-      background: #2a2a35;
+      background: var(--progress-track);
       border-radius: 999px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      background: linear-gradient(90deg, var(--blue), var(--green));
       border-radius: 999px;
       transition: width 0.35s ease;
     }
@@ -135,9 +220,9 @@
       min-width: 4.5rem;
     }
     .btn {
-      background: #2a2a35;
+      background: var(--btn-bg);
       color: var(--text);
-      border: 1px solid #3f3f4a;
+      border: 1px solid var(--btn-border);
       padding: 0.45rem 0.9rem;
       border-radius: 8px;
       font-size: 0.875rem;
@@ -145,11 +230,10 @@
       transition: background 0.2s, border-color 0.2s;
     }
     .btn:hover {
-      background: #3a3a45;
-      border-color: #5a5a6a;
+      background: var(--btn-hover);
     }
     .btn-reset {
-      color: #f87171;
+      color: #ef4444;
     }
 
     .checklist {
@@ -160,7 +244,7 @@
       align-items: flex-start;
       gap: 0.85rem;
       padding: 0.85rem 0.5rem;
-      border-bottom: 1px solid #2a2a35;
+      border-bottom: 1px solid var(--border-soft);
       border-radius: 8px;
       transition: background 0.2s;
       cursor: pointer;
@@ -170,7 +254,7 @@
       border-bottom: none;
     }
     .checklist-item:hover {
-      background: rgba(255,255,255,0.03);
+      background: var(--hover-row);
     }
     .checklist-item.done {
       opacity: 0.75;
@@ -186,7 +270,7 @@
       width: 22px;
       height: 22px;
       margin-top: 2px;
-      border: 2px solid #4b5563;
+      border: 2px solid var(--check-border);
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -223,7 +307,7 @@
     .item-hint {
       display: block;
       font-size: 0.8rem;
-      color: #64748b;
+      color: var(--hint);
       margin-top: 0.25rem;
     }
 
@@ -231,10 +315,10 @@
       display: none;
       margin-top: 1.25rem;
       padding: 1rem 1.25rem;
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: var(--complete-bg);
+      border: 1px solid var(--complete-border);
       border-radius: 12px;
-      color: #86efac;
+      color: var(--complete-text);
       text-align: center;
       font-weight: 500;
     }
@@ -250,6 +334,10 @@
 </head>
 <body>
   <header>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light mode">
+      <span class="icon-moon" id="themeIcon">🌙</span>
+      <span class="label" id="themeLabel">Dark</span>
+    </button>
     <h1>Framework-Only vs Deep Developer</h1>
     <p class="subtitle">The same bug. Two completely different ways of thinking.</p>
   </header>
@@ -383,6 +471,44 @@
   </footer>
 
   <script>
+    // ===== Theme toggle =====
+    const THEME_KEY = 'dev-depth-theme';
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      if (theme === 'light') {
+        themeIcon.textContent = '☀️';
+        themeLabel.textContent = 'Light';
+      } else {
+        themeIcon.textContent = '🌙';
+        themeLabel.textContent = 'Dark';
+      }
+      localStorage.setItem(THEME_KEY, theme);
+    }
+
+    function loadTheme() {
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'light' || saved === 'dark') {
+        applyTheme(saved);
+      } else {
+        // Prefer system preference if no saved choice
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(prefersDark ? 'dark' : 'light');
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    loadTheme();
+
+    // ===== Checklist =====
     const STORAGE_KEY = 'dev-depth-checklist';
     const items = document.querySelectorAll('.checklist-item');
     const progressFill = document.getElementById('progressFill');
