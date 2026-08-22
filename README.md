@@ -36,7 +36,7 @@ A developer who only knows the framework will keep changing hooks and state mana
 
 ## What's in this repo
 
-- `index.html` — Dark-themed educational page featuring:
+- `index.html` — Educational page featuring:
   - Side-by-side comparison of framework-only vs platform-aware thinking
   - **Interactive debugging checklist** with:
     - Clickable checkboxes
@@ -44,6 +44,9 @@ A developer who only knows the framework will keep changing hooks and state mana
     - localStorage persistence (progress survives page reloads)
     - Reset button
     - Completion celebration banner
+  - **Dark / Light mode toggle** (top-right)
+    - Preference saved in localStorage
+    - Falls back to system preference on first visit
 - This README
 
 ## Project Goals
@@ -57,7 +60,8 @@ A developer who only knows the framework will keep changing hooks and state mana
 1. Star / fork if useful
 2. Enable GitHub Pages (see above) to host the landing page
 3. Use the interactive checklist during real debugging sessions or onboarding
-4. Drop the original imagery into `assets/` if you want to host it yourself
+4. Toggle dark/light mode with the button in the header
+5. Drop the original imagery into `assets/` if you want to host it yourself
 
 ## License
 
